@@ -9,13 +9,12 @@
         :root {
             --fondo-principal: #050505;
             --fondo-tarjeta: #121212;
-            --borde-tarjeta: #2A2A2A;
             --verde-cw: #2E4C3B;
             --verde-brillo: #4A7A5E;
             --texto-blanco: #F0F0F0;
             --texto-gris: #A0A0A0;
-            /* Variable para el contorno delgado (Blanco semi-transparente para toque premium) */
-            --luz-contorno: rgba(255, 255, 255, 0.7); 
+            /* Contorno ultra fino y uniforme para logos */
+            --contorno-fino: rgba(255, 255, 255, 0.6); 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
@@ -31,15 +30,13 @@
 
         .contenedor-app { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 25px; }
 
-        /* --- HEADER Y LOGO CON CONTORNO DELGADO --- */
-        .header { text-align: center; padding: 20px 0; border-bottom: 1px solid var(--borde-tarjeta); }
+        /* --- HEADER Y LOGO CON CONTORNO UNIFORME --- */
+        .header { text-align: center; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .header img {
             max-width: 220px;
             height: auto;
-            /* Doble drop-shadow súper cerrado para simular un borde duro en vez de luz borrosa */
-            filter: drop-shadow(1px 1px 0px var(--luz-contorno)) 
-                    drop-shadow(-1px -1px 0px var(--luz-contorno)) 
-                    brightness(1.1);
+            /* Distancia 0,0 con un ligero blur crea el contorno perimetral exacto */
+            filter: drop-shadow(0px 0px 1px var(--contorno-fino)) brightness(1.05);
         }
 
         /* --- SALUDO --- */
@@ -61,15 +58,19 @@
             box-shadow: 0 0 10px rgba(74, 122, 94, 0.3);
         }
 
-        /* --- DASHBOARD PRINCIPAL --- */
+        /* --- DASHBOARD PRINCIPAL CON EFECTO PREMIUM --- */
         .dashboard-card {
             background-color: var(--fondo-tarjeta);
-            border: 1px solid var(--borde-tarjeta);
             border-radius: 20px;
             padding: 25px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            /* Aquí está la magia del borde difuminado premium */
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 
+                0 0 15px rgba(255, 255, 255, 0.04), /* Resplandor exterior sutil */
+                inset 0 0 20px rgba(255, 255, 255, 0.02), /* Resplandor interior */
+                0 10px 30px rgba(0,0,0,0.8); /* Sombra base de profundidad */
         }
 
         .dashboard-card::before {
@@ -110,7 +111,7 @@
         }
         .donut-hole span { font-size: 16px; font-weight: 800; color: var(--texto-blanco); }
 
-        /* --- BOTONES DOBLES Y ESTRELLA CON CONTORNO --- */
+        /* --- BOTONES DOBLES Y ESTRELLA --- */
         .contenedor-botones {
             display: flex;
             gap: 12px; 
@@ -144,9 +145,8 @@
 
         .btn-accion img {
             width: 20px; height: 20px;
-            /* Contorno delgado para la estrella */
-            filter: drop-shadow(1px 1px 0px var(--luz-contorno)) 
-                    drop-shadow(-1px -1px 0px var(--luz-contorno));
+            /* Mismo contorno uniforme para la estrella en los botones */
+            filter: drop-shadow(0px 0px 1px var(--contorno-fino));
         }
 
         .btn-accion::after {
@@ -175,20 +175,18 @@
             background-color: var(--fondo-tarjeta); 
             border-radius: 12px; 
             margin-bottom: 10px; 
-            border: 1px solid #1A1A1A; 
+            border: 1px solid rgba(255, 255, 255, 0.03); 
             transition: transform 0.2s ease; 
         }
         
-        .item-historial:hover { transform: translateY(-2px); border-color: var(--borde-tarjeta); }
+        .item-historial:hover { transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.1); }
         .item-izq span.fecha { display: block; font-size: 14px; font-weight: 700; margin-bottom: 2px;}
         .item-izq span.sucursal { font-size: 12px; color: var(--texto-gris); }
         
-        /* Check-in VIP más limpio y sin tanto neón */
         .item-der { 
             color: var(--verde-brillo); 
             font-size: 16px;
             font-weight: 800; 
-            filter: drop-shadow(0 0 2px rgba(74, 122, 94, 0.5));
         }
 
     </style>
@@ -274,4 +272,3 @@
     </div>
 </body>
 </html>
-
