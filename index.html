@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+        <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +12,7 @@
             --borde-tarjeta: #2A2A2A;
             --verde-cw: #2E4C3B;
             --verde-brillo: #4A7A5E;
-            --verde-neon: #00C853; /* Para el resplandor premium */
+            --verde-neon: #00C853; 
             --texto-blanco: #F0F0F0;
             --texto-gris: #A0A0A0;
         }
@@ -30,15 +30,15 @@
 
         .contenedor-app { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 25px; }
 
-        /* --- EFECTO PREMIUM EN LOGOS --- */
+        /* --- HEADER --- */
         .header { text-align: center; padding: 20px 0; border-bottom: 1px solid var(--borde-tarjeta); }
         .header img {
             max-width: 220px;
             height: auto;
-            /* Filtro de luz premium para el logo principal */
             filter: drop-shadow(0 0 12px rgba(46, 76, 59, 0.8)) brightness(1.1);
         }
 
+        /* --- SALUDO --- */
         .saludo-vip { margin-top: 10px; }
         .saludo-vip h1 { font-weight: 300; font-size: 24px; }
         .saludo-vip span { font-weight: 800; color: var(--texto-blanco); }
@@ -57,6 +57,7 @@
             box-shadow: 0 0 10px rgba(74, 122, 94, 0.3);
         }
 
+        /* --- DASHBOARD PRINCIPAL --- */
         .dashboard-card {
             background-color: var(--fondo-tarjeta);
             border: 1px solid var(--borde-tarjeta);
@@ -73,35 +74,31 @@
             filter: blur(60px); opacity: 0.5;
         }
 
-        /* --- NUEVO LAYOUT DE ESTADÍSTICAS Y GRÁFICAS --- */
         .estadisticas-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
-        .dato-dinero { display: flex; flex-direction: column; }
-        .dato-dinero span.titulo { font-size: 12px; color: var(--texto-gris); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-        .dato-dinero span.valor { font-size: 32px; font-weight: 700; text-shadow: 0 0 15px rgba(74, 122, 94, 0.4); }
-        .dato-dinero span.valor span.simbolo { font-size: 20px; color: var(--verde-brillo); }
+        /* Dato Principal de Visitas */
+        .dato-principal { display: flex; flex-direction: column; }
+        .dato-principal span.titulo { font-size: 12px; color: var(--texto-gris); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; font-weight: 700; }
+        .dato-principal span.valor { font-size: 42px; font-weight: 800; text-shadow: 0 0 15px rgba(74, 122, 94, 0.4); line-height: 1; }
 
-        /* Contenedor de las Donas */
+        /* Gráficas de Visitas */
         .graficas-visitas { display: flex; gap: 15px; }
         .grafica-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .grafica-titulo { font-size: 9px; color: var(--texto-gris); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
         
-        /* Gráfica Circular (Conic Gradient) */
         .donut-chart {
             width: 55px; height: 55px;
             border-radius: 50%;
-            /* El --porcentaje se controla en el HTML inline */
             background: conic-gradient(var(--verde-brillo) var(--porcentaje), #1A1A1A 0);
             display: flex; justify-content: center; align-items: center;
             box-shadow: 0 0 15px rgba(0,0,0,0.6), inset 0 0 8px rgba(0,0,0,0.8);
         }
         
-        /* El hueco del centro */
         .donut-hole {
             width: 43px; height: 43px;
             border-radius: 50%;
@@ -111,29 +108,44 @@
         }
         .donut-hole span { font-size: 16px; font-weight: 800; color: var(--texto-blanco); }
 
-        /* --- BOTÓN CON EFECTO DE REFLEJO --- */
-        .menu-secreto-btn {
+        /* --- BOTONES DOBLES --- */
+        .contenedor-botones {
+            display: flex;
+            gap: 12px; /* Separación entre los dos botones */
+            width: 100%;
+        }
+
+        .btn-accion {
+            flex: 1; /* Para que ambos midan exactamente lo mismo */
             background-color: #151515;
             color: var(--texto-blanco);
             border: 1px solid var(--verde-brillo);
-            padding: 15px; width: 100%; border-radius: 12px;
-            font-size: 13px; font-weight: 700; letter-spacing: 1px;
-            cursor: pointer; transition: all 0.3s ease;
-            display: flex; justify-content: center; align-items: center; gap: 10px;
-            position: relative; overflow: hidden; /* Necesario para que la luz no se salga */
+            padding: 12px 5px; 
+            border-radius: 12px;
+            font-size: 11px; /* Letra un poco más chica para que quepa bien */
+            font-weight: 700; 
+            letter-spacing: 0.5px;
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            display: flex; 
+            flex-direction: column; /* Icono arriba, texto abajo */
+            justify-content: center; 
+            align-items: center; 
+            gap: 6px;
+            position: relative; 
+            overflow: hidden; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            text-align: center;
         }
 
-        .menu-secreto-btn:hover { background-color: var(--verde-cw); box-shadow: 0 0 20px rgba(74,122,94,0.6); }
+        .btn-accion:hover { background-color: var(--verde-cw); box-shadow: 0 0 20px rgba(74,122,94,0.6); }
 
-        .menu-secreto-btn img {
+        .btn-accion img {
             width: 20px; height: 20px;
-            /* Filtro premium a la estrella */
             filter: drop-shadow(0 0 5px var(--verde-neon));
         }
 
-        /* Animación de la luz pasando */
-        .menu-secreto-btn::after {
+        .btn-accion::after {
             content: ''; position: absolute; top: 0; left: -150%;
             width: 50%; height: 100%;
             background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
@@ -147,19 +159,40 @@
             100% { left: 200%; }
         }
 
-        /* --- HISTORIAL --- */
+        /* --- HISTORIAL DE VISITAS --- */
         .historial { margin-top: 10px; }
         .historial h3 { font-size: 13px; color: var(--texto-gris); margin-bottom: 15px; letter-spacing: 1px; }
-        .item-historial { display: flex; justify-content: space-between; padding: 15px; background-color: var(--fondo-tarjeta); border-radius: 12px; margin-bottom: 10px; border: 1px solid #1A1A1A; transition: transform 0.2s ease; }
+        
+        .item-historial { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            padding: 15px; 
+            background-color: var(--fondo-tarjeta); 
+            border-radius: 12px; 
+            margin-bottom: 10px; 
+            border: 1px solid #1A1A1A; 
+            transition: transform 0.2s ease; 
+        }
+        
         .item-historial:hover { transform: translateY(-2px); border-color: var(--borde-tarjeta); }
-        .item-izq span.fecha { display: block; font-size: 14px; font-weight: 700; }
+        .item-izq span.fecha { display: block; font-size: 14px; font-weight: 700; margin-bottom: 2px;}
         .item-izq span.sucursal { font-size: 12px; color: var(--texto-gris); }
-        .item-der { color: var(--verde-brillo); font-weight: 700; }
+        
+        /* Palomita de check-in VIP */
+        .item-der { 
+            color: var(--verde-neon); 
+            font-size: 16px;
+            font-weight: 800; 
+            filter: drop-shadow(0 0 5px rgba(0,200,83,0.4));
+        }
+
     </style>
 </head>
 <body>
 
     <div class="contenedor-app">
+        
         <div class="header">
             <img src="CW_VDEOSC_HORIZONTAL.png" alt="Central Wings Logo">
         </div>
@@ -172,9 +205,9 @@
         <div class="dashboard-card">
             
             <div class="estadisticas-container">
-                <div class="dato-dinero">
-                    <span class="titulo">Alitas-Pesos</span>
-                    <span class="valor"><span class="simbolo">$</span>450<span class="simbolo">.00</span></span>
+                <div class="dato-principal">
+                    <span class="titulo">Visitas Totales</span>
+                    <span class="valor">12</span>
                 </div>
                 
                 <div class="graficas-visitas">
@@ -189,37 +222,51 @@
                         <div class="donut-chart total" style="--porcentaje: 100%;">
                             <div class="donut-hole"><span>12</span></div>
                         </div>
-                        <span class="grafica-titulo">Totales</span>
+                        <span class="grafica-titulo">Total</span>
                     </div>
                 </div>
             </div>
             
-            <button class="menu-secreto-btn">
-                <img src="ICON_ESTRELLACW_VDEOSC.png" alt="Estrella">
-                DESBLOQUEAR MENÚ SECRETO
-            </button>
+            <div class="contenedor-botones">
+                <button class="btn-accion">
+                    <img src="ICON_ESTRELLACW_VDEOSC.png" alt="Beneficios">
+                    BENEFICIOS
+                </button>
+                <button class="btn-accion">
+                    <img src="ICON_ESTRELLACW_VDEOSC.png" alt="Menú Secreto">
+                    MENÚ SECRETO
+                </button>
+            </div>
         </div>
 
         <div class="historial">
-            <h3>ÚLTIMOS MOVIMIENTOS</h3>
+            <h3>HISTORIAL DE ASISTENCIA</h3>
             
             <div class="item-historial">
                 <div class="item-izq">
-                    <span class="fecha">Ayer</span>
+                    <span class="fecha">Ayer • 8:30 PM</span>
                     <span class="sucursal">Sucursal Altacia</span>
                 </div>
-                <div class="item-der">+$45.00</div>
+                <div class="item-der">✓</div>
             </div>
 
             <div class="item-historial">
                 <div class="item-izq">
-                    <span class="fecha">12 Oct 2026</span>
+                    <span class="fecha">12 Oct 2026 • 9:15 PM</span>
                     <span class="sucursal">Sucursal Altacia</span>
                 </div>
-                <div class="item-der">+$82.50</div>
+                <div class="item-der">✓</div>
+            </div>
+            
+            <div class="item-historial">
+                <div class="item-izq">
+                    <span class="fecha">28 Sep 2026 • 7:00 PM</span>
+                    <span class="sucursal">Sucursal Altacia</span>
+                </div>
+                <div class="item-der">✓</div>
             </div>
         </div>
+
     </div>
 </body>
 </html>
-
