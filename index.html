@@ -12,7 +12,6 @@
             --verde-brillo: #4A7A5E;
             --texto-blanco: #F0F0F0;
             --texto-gris: #A0A0A0;
-            /* El color exacto para el contorno sólido de tus logos */
             --color-contorno: #FFFFFF; 
         }
 
@@ -27,164 +26,89 @@
             padding: 20px;
         }
 
-        .contenedor-app { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 25px; }
+        .contenedor-app { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 20px; }
 
-        /* --- CLASE PARA CONTORNO SÓLIDO (APLICA A LOGO Y ESTRELLA) --- */
         .contorno-solido {
-            /* 4 sombras a 1px de distancia sin desenfoque (blur 0) = Contorno perfecto */
             filter: drop-shadow(1px 0px 0px var(--color-contorno)) 
                     drop-shadow(-1px 0px 0px var(--color-contorno)) 
                     drop-shadow(0px 1px 0px var(--color-contorno)) 
                     drop-shadow(0px -1px 0px var(--color-contorno));
         }
 
-        /* --- HEADER --- */
-        .header { text-align: center; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .header img {
-            max-width: 220px;
-            height: auto;
-        }
-
         /* --- SALUDO --- */
-        .saludo-vip { margin-top: 10px; }
-        .saludo-vip h1 { font-weight: 300; font-size: 24px; }
+        .saludo-vip { margin-top: 10px; text-align: center; }
+        .saludo-vip h1 { font-weight: 300; font-size: 22px; }
         .saludo-vip span { font-weight: 800; color: var(--texto-blanco); }
 
-        .etiqueta-priority {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--verde-cw), #111);
-            color: var(--texto-blanco);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            margin-top: 8px;
-            border: 1px solid var(--verde-brillo);
-            box-shadow: 0 0 10px rgba(74, 122, 94, 0.3);
+        /* =========================================
+           MOTOR 3D Y TARJETA
+        ========================================= */
+        .escena-3d {
+            width: 100%;
+            /* Proporción exacta de una tarjeta de crédito */
+            aspect-ratio: 1.58; 
+            min-height: 240px;
+            perspective: 1200px; /* Profundidad 3D */
+            margin-bottom: 10px;
+            
+            /* Animación de flote infinito invitando al clic */
+            animation: flotar 4s ease-in-out infinite;
         }
 
-        /* --- DASHBOARD: EFECTO DE TARJETA METÁLICA --- */
-        .dashboard-card {
-            /* Degradado que simula el reflejo en un panel de metal negro mate */
+        @keyframes flotar {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .tarjeta-3d {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Giro con rebote suave */
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        /* Clase que se activa con JS para girarla */
+        .tarjeta-3d.girada {
+            transform: rotateY(180deg);
+        }
+
+        /* Base para ambas caras (Metal pesado) */
+        .cara-tarjeta {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* Oculta la cara que queda atrás */
+            -webkit-backface-visibility: hidden;
+            
+            /* Efecto Metal Cepillado (Se aplica al frente y al dorso) */
             background: linear-gradient(135deg, #1e1e1e 0%, #121212 40%, #181818 60%, #0a0a0a 100%);
             border-radius: 20px;
-            padding: 25px;
-            position: relative;
-            overflow: hidden;
-            
-            /* Borde biselado: luz arriba/izquierda, sombra abajo/derecha */
             border-top: 1px solid rgba(255, 255, 255, 0.25);
             border-left: 1px solid rgba(255, 255, 255, 0.15);
             border-bottom: 1px solid rgba(0, 0, 0, 0.9);
             border-right: 1px solid rgba(0, 0, 0, 0.9);
-            
-            /* Profundidad pesada */
-            box-shadow: 
-                inset 0 1px 2px rgba(255, 255, 255, 0.05),
-                0 20px 40px rgba(0, 0, 0, 0.95);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.05), 0 20px 40px rgba(0, 0, 0, 0.95);
+            overflow: hidden;
         }
 
-        /* Reflejo superior para acentuar el metal */
-        .dashboard-card::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 40%;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
-            pointer-events: none;
-        }
-
-        .dashboard-card::before {
-            content: ''; position: absolute; top: -50px; right: -50px;
-            width: 100px; height: 100px; background: var(--verde-cw);
-            filter: blur(60px); opacity: 0.4;
-        }
-
-        .estadisticas-container {
+        /* =========================================
+           CARA FRENTE (LA FÍSICA)
+        ========================================= */
+        .frente {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            position: relative; /* Asegura que quede sobre los efectos del fondo */
-            z-index: 2;
-        }
-
-        .dato-principal { display: flex; flex-direction: column; }
-        .dato-principal span.titulo { font-size: 12px; color: var(--texto-gris); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; font-weight: 700; }
-        .dato-principal span.valor { font-size: 42px; font-weight: 800; text-shadow: 0 5px 15px rgba(0, 0, 0, 0.8); line-height: 1; }
-
-        .graficas-visitas { display: flex; gap: 15px; }
-        .grafica-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .grafica-titulo { font-size: 9px; color: var(--texto-gris); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
-        
-        .donut-chart {
-            width: 55px; height: 55px;
-            border-radius: 50%;
-            background: conic-gradient(var(--verde-brillo) var(--porcentaje), #121212 0);
-            display: flex; justify-content: center; align-items: center;
-            /* Sombra tipo ranura en el metal */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.8), inset 0 2px 4px rgba(0,0,0,0.9);
-        }
-        
-        .donut-hole {
-            width: 43px; height: 43px;
-            border-radius: 50%;
-            /* El centro usa el mismo tono oscuro del metal */
-            background-color: #151515;
-            display: flex; justify-content: center; align-items: center;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.6), 0 1px 1px rgba(255,255,255,0.05);
-        }
-        .donut-hole span { font-size: 16px; font-weight: 800; color: var(--texto-blanco); }
-
-        /* --- BOTONES DOBLES --- */
-        .contenedor-botones {
-            display: flex;
-            gap: 12px; 
-            width: 100%;
             position: relative;
-            z-index: 2;
         }
 
-        .btn-accion {
-            flex: 1; 
-            /* Textura oscura para los botones */
-            background: linear-gradient(to bottom, #1a1a1a, #111111);
-            color: var(--texto-blanco);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-bottom: 2px solid #050505;
-            padding: 12px 5px; 
-            border-radius: 12px;
-            font-size: 11px; 
-            font-weight: 700; 
-            letter-spacing: 0.5px;
-            cursor: pointer; 
-            transition: all 0.3s ease;
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 6px;
-            position: relative; 
-            overflow: hidden; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            text-align: center;
-        }
-
-        .btn-accion:hover { 
-            background: var(--verde-cw); 
-            border-color: var(--verde-brillo); 
-        }
-
-        .btn-accion img {
-            width: 20px; height: 20px;
-        }
-
-        .btn-accion::after {
+        /* Animación de reflejo de luz barriendo la tarjeta */
+        .frente::after {
             content: ''; position: absolute; top: 0; left: -150%;
             width: 50%; height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0) 100%);
             transform: skewX(-25deg);
-            animation: reflejo-luz 3.5s infinite;
+            animation: reflejo-luz 4s infinite;
+            pointer-events: none;
         }
 
         @keyframes reflejo-luz {
@@ -193,31 +117,112 @@
             100% { left: 200%; }
         }
 
+        /* Elementos del Frente */
+        .frente-top-left {
+            position: absolute;
+            top: 20px; left: 20px;
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+        }
+        
+        .frente-top-left img { max-width: 140px; height: auto; }
+        
+        .frente-top-left .texto-grabado {
+            font-size: 8px; font-weight: 700; letter-spacing: 2px;
+            color: #777; /* Gris metálico */
+            /* Efecto de texto sumido (grabado en láser) */
+            text-shadow: -1px -1px 1px #000, 1px 1px 1px #222;
+            text-transform: uppercase;
+        }
+        .frente-top-left .texto-grabado.altacia { font-size: 10px; margin-top: 2px; color: var(--verde-brillo); }
+
+        .frente-centro {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .frente-centro img { width: 100px; height: auto; }
+
+        .frente-bottom-right {
+            position: absolute;
+            bottom: 20px; right: 20px;
+            font-size: 12px; font-weight: 800; letter-spacing: 2px;
+            color: #4A7A5E;
+            text-shadow: -1px -1px 1px #000, 1px 1px 1px #222;
+        }
+
+        /* =========================================
+           CARA DORSO (EL DASHBOARD)
+        ========================================= */
+        .dorso {
+            transform: rotateY(180deg); /* Volteada por defecto para quedar atrás */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .dorso::before {
+            content: ''; position: absolute; top: -50px; right: -50px;
+            width: 100px; height: 100px; background: var(--verde-cw);
+            filter: blur(60px); opacity: 0.4; pointer-events: none;
+        }
+
+        .estadisticas-container {
+            display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 2;
+        }
+
+        .dato-principal { display: flex; flex-direction: column; }
+        .dato-principal span.titulo { font-size: 11px; color: var(--texto-gris); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; font-weight: 700; }
+        .dato-principal span.valor { font-size: 38px; font-weight: 800; text-shadow: 0 5px 15px rgba(0, 0, 0, 0.8); line-height: 1; }
+
+        .graficas-visitas { display: flex; gap: 15px; }
+        .grafica-item { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .grafica-titulo { font-size: 8px; color: var(--texto-gris); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+        
+        .donut-chart {
+            width: 48px; height: 48px; border-radius: 50%;
+            background: conic-gradient(var(--verde-brillo) var(--porcentaje), #121212 0);
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.8), inset 0 2px 4px rgba(0,0,0,0.9);
+        }
+        
+        .donut-hole {
+            width: 38px; height: 38px; border-radius: 50%; background-color: #151515;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.6), 0 1px 1px rgba(255,255,255,0.05);
+        }
+        .donut-hole span { font-size: 14px; font-weight: 800; color: var(--texto-blanco); }
+
+        .contenedor-botones {
+            display: flex; gap: 10px; width: 100%; position: relative; z-index: 2;
+        }
+
+        .btn-accion {
+            flex: 1; 
+            background: linear-gradient(to bottom, #1a1a1a, #111111);
+            color: var(--texto-blanco);
+            border: 1px solid rgba(255,255,255,0.1); border-bottom: 2px solid #050505;
+            padding: 10px 5px; border-radius: 12px;
+            font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+            cursor: pointer; transition: all 0.3s ease;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5); text-align: center;
+        }
+        .btn-accion:hover { background: var(--verde-cw); border-color: var(--verde-brillo); }
+        .btn-accion img { width: 18px; height: 18px; }
+
         /* --- HISTORIAL DE VISITAS --- */
-        .historial { margin-top: 10px; }
-        .historial h3 { font-size: 13px; color: var(--texto-gris); margin-bottom: 15px; letter-spacing: 1px; }
+        .historial { margin-top: 5px; }
+        .historial h3 { font-size: 12px; color: var(--texto-gris); margin-bottom: 15px; letter-spacing: 1px; text-align: center; }
         
         .item-historial { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            padding: 15px; 
-            background-color: #0f0f0f; 
-            border-radius: 12px; 
-            margin-bottom: 10px; 
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 15px; background-color: #0f0f0f; border-radius: 12px; margin-bottom: 8px; 
             border: 1px solid rgba(255, 255, 255, 0.03); 
-            transition: transform 0.2s ease; 
         }
-        
-        .item-historial:hover { transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.1); }
-        .item-izq span.fecha { display: block; font-size: 14px; font-weight: 700; margin-bottom: 2px;}
-        .item-izq span.sucursal { font-size: 12px; color: var(--texto-gris); }
-        
-        .item-der { 
-            color: var(--verde-brillo); 
-            font-size: 16px;
-            font-weight: 800; 
-        }
+        .item-izq span.fecha { display: block; font-size: 13px; font-weight: 700; margin-bottom: 2px;}
+        .item-izq span.sucursal { font-size: 11px; color: var(--texto-gris); }
+        .item-der { color: var(--verde-brillo); font-size: 16px; font-weight: 800; }
 
     </style>
 </head>
@@ -225,49 +230,71 @@
 
     <div class="contenedor-app">
         
-        <div class="header">
-            <img src="CW_VDEOSC_HORIZONTAL.png" alt="Central Wings Logo" class="contorno-solido">
-        </div>
-
         <div class="saludo-vip">
             <h1>Qué onda, <span>Alejandro</span></h1>
-            <div class="etiqueta-priority">PRIORITY+</div>
+            <p style="font-size: 12px; color: #888; margin-top: 5px;">Toca tu tarjeta para ver tus datos</p>
         </div>
 
-        <div class="dashboard-card">
-            
-            <div class="estadisticas-container">
-                <div class="dato-principal">
-                    <span class="titulo">Visitas Totales</span>
-                    <span class="valor">12</span>
-                </div>
+        <!-- ESCENA 3D (LA MAGIA EMPIEZA AQUÍ) -->
+        <div class="escena-3d">
+            <div class="tarjeta-3d" id="tarjetaPriority">
                 
-                <div class="graficas-visitas">
-                    <div class="grafica-item">
-                        <div class="donut-chart mes" style="--porcentaje: 75%;">
-                            <div class="donut-hole"><span>3</span></div>
+                <!-- CARA FRENTE (Replica de la tarjeta física) -->
+                <div class="cara-tarjeta frente">
+                    
+                    <div class="frente-top-left">
+                        <img src="CW_VDEOSC_HORIZONTAL.png" alt="Central Wings" class="contorno-solido">
+                        <span class="texto-grabado altacia">— ALTACIA —</span>
+                        <span class="texto-grabado">MASTER EN ALITAS</span>
+                    </div>
+
+                    <div class="frente-centro">
+                        <img src="ICON_ESTRELLACW_VDEOSC.png" alt="Estrella" class="contorno-solido">
+                    </div>
+
+                    <div class="frente-bottom-right">
+                        PRIORITY+
+                    </div>
+                </div>
+
+                <!-- CARA DORSO (Dashboard Interactivo) -->
+                <div class="cara-tarjeta dorso">
+                    
+                    <div class="estadisticas-container">
+                        <div class="dato-principal">
+                            <span class="titulo">Visitas Totales</span>
+                            <span class="valor">12</span>
                         </div>
-                        <span class="grafica-titulo">Mes</span>
+                        
+                        <div class="graficas-visitas">
+                            <div class="grafica-item">
+                                <div class="donut-chart mes" style="--porcentaje: 75%;">
+                                    <div class="donut-hole"><span>3</span></div>
+                                </div>
+                                <span class="grafica-titulo">Mes</span>
+                            </div>
+                            <div class="grafica-item">
+                                <div class="donut-chart total" style="--porcentaje: 100%;">
+                                    <div class="donut-hole"><span>12</span></div>
+                                </div>
+                                <span class="grafica-titulo">Total</span>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="grafica-item">
-                        <div class="donut-chart total" style="--porcentaje: 100%;">
-                            <div class="donut-hole"><span>12</span></div>
-                        </div>
-                        <span class="grafica-titulo">Total</span>
+                    <div class="contenedor-botones">
+                        <!-- El 'onclick' previene que al picar el botón la tarjeta se quiera voltear de nuevo -->
+                        <button class="btn-accion" onclick="event.stopPropagation(); alert('Sección en construcción');">
+                            <img src="ICON_ESTRELLACW_VDEOSC.png" alt="Beneficios" class="contorno-solido">
+                            BENEFICIOS
+                        </button>
+                        <button class="btn-accion" onclick="event.stopPropagation(); alert('Sección en construcción');">
+                            <img src="ICON_ESTRELLACW_VDEOSC.png" alt="Menú Secreto" class="contorno-solido">
+                            MENÚ SECRETO
+                        </button>
                     </div>
                 </div>
-            </div>
-            
-            <div class="contenedor-botones">
-                <button class="btn-accion">
-                    <img src="ICON_ESTRELLACW_VDEOSC.png" alt="Beneficios" class="contorno-solido">
-                    BENEFICIOS
-                </button>
-                <button class="btn-accion">
-                    <img src="ICON_ESTRELLACW_VDEOSC.png" alt="Menú Secreto" class="contorno-solido">
-                    MENÚ SECRETO
-                </button>
+
             </div>
         </div>
 
@@ -300,5 +327,35 @@
         </div>
 
     </div>
+
+    <!-- SCRIPT DEL GIRO 3D Y VIBRACIÓN -->
+    <script>
+        const tarjeta = document.getElementById('tarjetaPriority');
+        let yaSeVolteo = false;
+
+        tarjeta.addEventListener('click', () => {
+            // Solo ejecuta la animación si no se ha volteado antes
+            if (!yaSeVolteo) {
+                
+                // 1. Efecto Háptico (Vibración de 50ms)
+                // Funciona perfecto en dispositivos Android
+                if (navigator.vibrate) {
+                    navigator.vibrate(50);
+                }
+
+                // 2. Dispara el Giro 3D
+                tarjeta.classList.add('girada');
+                
+                // 3. Activa el candado (Ya no se puede voltear)
+                yaSeVolteo = true;
+                
+                // Opción extra: Detener la animación de "flote" para que el dashboard se quede fijo y fácil de leer
+                setTimeout(() => {
+                    document.querySelector('.escena-3d').style.animation = 'none';
+                }, 900); // 900ms es lo que tarda la transición del giro
+            }
+        });
+    </script>
 </body>
 </html>
+
