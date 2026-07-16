@@ -1,4 +1,4 @@
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -12,9 +12,10 @@
             --borde-tarjeta: #2A2A2A;
             --verde-cw: #2E4C3B;
             --verde-brillo: #4A7A5E;
-            --verde-neon: #00C853; 
             --texto-blanco: #F0F0F0;
             --texto-gris: #A0A0A0;
+            /* Variable para el contorno delgado (Blanco semi-transparente para toque premium) */
+            --luz-contorno: rgba(255, 255, 255, 0.7); 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
@@ -30,12 +31,15 @@
 
         .contenedor-app { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 25px; }
 
-        /* --- HEADER --- */
+        /* --- HEADER Y LOGO CON CONTORNO DELGADO --- */
         .header { text-align: center; padding: 20px 0; border-bottom: 1px solid var(--borde-tarjeta); }
         .header img {
             max-width: 220px;
             height: auto;
-            filter: drop-shadow(0 0 12px rgba(46, 76, 59, 0.8)) brightness(1.1);
+            /* Doble drop-shadow súper cerrado para simular un borde duro en vez de luz borrosa */
+            filter: drop-shadow(1px 1px 0px var(--luz-contorno)) 
+                    drop-shadow(-1px -1px 0px var(--luz-contorno)) 
+                    brightness(1.1);
         }
 
         /* --- SALUDO --- */
@@ -81,12 +85,10 @@
             margin-bottom: 30px;
         }
 
-        /* Dato Principal de Visitas */
         .dato-principal { display: flex; flex-direction: column; }
         .dato-principal span.titulo { font-size: 12px; color: var(--texto-gris); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; font-weight: 700; }
         .dato-principal span.valor { font-size: 42px; font-weight: 800; text-shadow: 0 0 15px rgba(74, 122, 94, 0.4); line-height: 1; }
 
-        /* Gráficas de Visitas */
         .graficas-visitas { display: flex; gap: 15px; }
         .grafica-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .grafica-titulo { font-size: 9px; color: var(--texto-gris); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
@@ -108,27 +110,27 @@
         }
         .donut-hole span { font-size: 16px; font-weight: 800; color: var(--texto-blanco); }
 
-        /* --- BOTONES DOBLES --- */
+        /* --- BOTONES DOBLES Y ESTRELLA CON CONTORNO --- */
         .contenedor-botones {
             display: flex;
-            gap: 12px; /* Separación entre los dos botones */
+            gap: 12px; 
             width: 100%;
         }
 
         .btn-accion {
-            flex: 1; /* Para que ambos midan exactamente lo mismo */
+            flex: 1; 
             background-color: #151515;
             color: var(--texto-blanco);
             border: 1px solid var(--verde-brillo);
             padding: 12px 5px; 
             border-radius: 12px;
-            font-size: 11px; /* Letra un poco más chica para que quepa bien */
+            font-size: 11px; 
             font-weight: 700; 
             letter-spacing: 0.5px;
             cursor: pointer; 
             transition: all 0.3s ease;
             display: flex; 
-            flex-direction: column; /* Icono arriba, texto abajo */
+            flex-direction: column; 
             justify-content: center; 
             align-items: center; 
             gap: 6px;
@@ -142,7 +144,9 @@
 
         .btn-accion img {
             width: 20px; height: 20px;
-            filter: drop-shadow(0 0 5px var(--verde-neon));
+            /* Contorno delgado para la estrella */
+            filter: drop-shadow(1px 1px 0px var(--luz-contorno)) 
+                    drop-shadow(-1px -1px 0px var(--luz-contorno));
         }
 
         .btn-accion::after {
@@ -179,12 +183,12 @@
         .item-izq span.fecha { display: block; font-size: 14px; font-weight: 700; margin-bottom: 2px;}
         .item-izq span.sucursal { font-size: 12px; color: var(--texto-gris); }
         
-        /* Palomita de check-in VIP */
+        /* Check-in VIP más limpio y sin tanto neón */
         .item-der { 
-            color: var(--verde-neon); 
+            color: var(--verde-brillo); 
             font-size: 16px;
             font-weight: 800; 
-            filter: drop-shadow(0 0 5px rgba(0,200,83,0.4));
+            filter: drop-shadow(0 0 2px rgba(74, 122, 94, 0.5));
         }
 
     </style>
@@ -270,3 +274,4 @@
     </div>
 </body>
 </html>
+
