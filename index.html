@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Priority+ | Central Wings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --fondo-principal: #050505;
+            --fondo-tarjeta: #121212;
+            --borde-tarjeta: #2A2A2A;
+            --verde-cw: #2E4C3B; /* Verde oscuro basado en tu diseño */
+            --verde-brillo: #4A7A5E;
+            --texto-blanco: #F0F0F0;
+            --texto-gris: #A0A0A0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--fondo-principal);
+            color: var(--texto-blanco);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .contenedor-app {
+            width: 100%;
+            max-width: 480px; /* Tamaño optimizado para celular */
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* Header con el Logo */
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--borde-tarjeta);
+        }
+
+        .header img {
+            max-width: 220px;
+            height: auto;
+        }
+
+        /* Saludo al Cliente VIP */
+        .saludo-vip {
+            margin-top: 10px;
+        }
+
+        .saludo-vip h1 {
+            font-weight: 300;
+            font-size: 24px;
+        }
+
+        .saludo-vip span {
+            font-weight: 800;
+            color: var(--texto-blanco);
+        }
+
+        .etiqueta-priority {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--verde-cw), #111);
+            color: var(--texto-blanco);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-top: 8px;
+            border: 1px solid var(--verde-brillo);
+        }
+
+        /* Tarjeta Virtual (Dashboard) */
+        .dashboard-card {
+            background-color: var(--fondo-tarjeta);
+            border: 1px solid var(--borde-tarjeta);
+            border-radius: 20px;
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        /* Efecto de luz en la tarjeta */
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 100px;
+            height: 100px;
+            background: var(--verde-cw);
+            filter: blur(60px);
+            opacity: 0.5;
+        }
+
+        .estadisticas {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .dato {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dato span.titulo {
+            font-size: 12px;
+            color: var(--texto-gris);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .dato span.valor {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .dato span.valor span.simbolo {
+            font-size: 20px;
+            color: var(--verde-brillo);
+        }
+
+        /* Botones de Acción Interacivos */
+        .menu-secreto-btn {
+            background-color: transparent;
+            color: var(--texto-blanco);
+            border: 1px solid var(--verde-brillo);
+            padding: 15px;
+            width: 100%;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-secreto-btn:hover {
+            background-color: var(--verde-cw);
+        }
+
+        .menu-secreto-btn img {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Historial simulado */
+        .historial {
+            margin-top: 10px;
+        }
+
+        .historial h3 {
+            font-size: 14px;
+            color: var(--texto-gris);
+            margin-bottom: 15px;
+        }
+
+        .item-historial {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background-color: var(--fondo-tarjeta);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #1A1A1A;
+        }
+
+        .item-izq span.fecha {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        
+        .item-izq span.sucursal {
+            font-size: 12px;
+            color: var(--texto-gris);
+        }
+
+        .item-der {
+            color: var(--verde-brillo);
+            font-weight: 700;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="contenedor-app">
+        <div class="header">
+            <img src="CW_VDEOSC_HORIZONTAL.png" alt="Central Wings Logo">
+        </div>
+
+        <div class="saludo-vip">
+            <h1>Qué onda, <span>Alejandro</span></h1>
+            <div class="etiqueta-priority">PRIORITY+</div>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="estadisticas">
+                <div class="dato">
+                    <span class="titulo">Alitas-Pesos</span>
+                    <span class="valor"><span class="simbolo">$</span>450<span class="simbolo">.00</span></span>
+                </div>
+                <div class="dato" style="text-align: right;">
+                    <span class="titulo">Visitas</span>
+                    <span class="valor">12</span>
+                </div>
+            </div>
+            
+            <button class="menu-secreto-btn">
+                <img src="ICON_ESTRELLACW_VDEOSC.png" alt="Estrella">
+                DESBLOQUEAR MENÚ SECRETO
+            </button>
+        </div>
+
+        <div class="historial">
+            <h3>ÚLTIMOS MOVIMIENTOS</h3>
+            
+            <div class="item-historial">
+                <div class="item-izq">
+                    <span class="fecha">Ayer</span>
+                    <span class="sucursal">Sucursal Altacia</span>
+                </div>
+                <div class="item-der">
+                    +$45.00
+                </div>
+            </div>
+
+            <div class="item-historial">
+                <div class="item-izq">
+                    <span class="fecha">12 Oct 2026</span>
+                    <span class="sucursal">Sucursal Altacia</span>
+                </div>
+                <div class="item-der">
+                    +$82.50
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Aquí meteremos después la lógica para conectar con Firebase o Google Sheets
+        console.log("Portal Priority+ Inicializado. Listo para recibir datos del NFC.");
+    </script>
+</body>
+</html>
