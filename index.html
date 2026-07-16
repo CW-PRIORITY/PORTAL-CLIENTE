@@ -8,13 +8,12 @@
     <style>
         :root {
             --fondo-principal: #050505;
-            --fondo-tarjeta: #121212;
             --verde-cw: #2E4C3B;
             --verde-brillo: #4A7A5E;
             --texto-blanco: #F0F0F0;
             --texto-gris: #A0A0A0;
-            /* Contorno ultra fino y uniforme para logos */
-            --contorno-fino: rgba(255, 255, 255, 0.6); 
+            /* El color exacto para el contorno sólido de tus logos */
+            --color-contorno: #FFFFFF; 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
@@ -30,13 +29,20 @@
 
         .contenedor-app { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 25px; }
 
-        /* --- HEADER Y LOGO CON CONTORNO UNIFORME --- */
+        /* --- CLASE PARA CONTORNO SÓLIDO (APLICA A LOGO Y ESTRELLA) --- */
+        .contorno-solido {
+            /* 4 sombras a 1px de distancia sin desenfoque (blur 0) = Contorno perfecto */
+            filter: drop-shadow(1px 0px 0px var(--color-contorno)) 
+                    drop-shadow(-1px 0px 0px var(--color-contorno)) 
+                    drop-shadow(0px 1px 0px var(--color-contorno)) 
+                    drop-shadow(0px -1px 0px var(--color-contorno));
+        }
+
+        /* --- HEADER --- */
         .header { text-align: center; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .header img {
             max-width: 220px;
             height: auto;
-            /* Distancia 0,0 con un ligero blur crea el contorno perimetral exacto */
-            filter: drop-shadow(0px 0px 1px var(--contorno-fino)) brightness(1.05);
         }
 
         /* --- SALUDO --- */
@@ -58,25 +64,40 @@
             box-shadow: 0 0 10px rgba(74, 122, 94, 0.3);
         }
 
-        /* --- DASHBOARD PRINCIPAL CON EFECTO PREMIUM --- */
+        /* --- DASHBOARD: EFECTO DE TARJETA METÁLICA --- */
         .dashboard-card {
-            background-color: var(--fondo-tarjeta);
+            /* Degradado que simula el reflejo en un panel de metal negro mate */
+            background: linear-gradient(135deg, #1e1e1e 0%, #121212 40%, #181818 60%, #0a0a0a 100%);
             border-radius: 20px;
             padding: 25px;
             position: relative;
             overflow: hidden;
-            /* Aquí está la magia del borde difuminado premium */
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            
+            /* Borde biselado: luz arriba/izquierda, sombra abajo/derecha */
+            border-top: 1px solid rgba(255, 255, 255, 0.25);
+            border-left: 1px solid rgba(255, 255, 255, 0.15);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.9);
+            border-right: 1px solid rgba(0, 0, 0, 0.9);
+            
+            /* Profundidad pesada */
             box-shadow: 
-                0 0 15px rgba(255, 255, 255, 0.04), /* Resplandor exterior sutil */
-                inset 0 0 20px rgba(255, 255, 255, 0.02), /* Resplandor interior */
-                0 10px 30px rgba(0,0,0,0.8); /* Sombra base de profundidad */
+                inset 0 1px 2px rgba(255, 255, 255, 0.05),
+                0 20px 40px rgba(0, 0, 0, 0.95);
+        }
+
+        /* Reflejo superior para acentuar el metal */
+        .dashboard-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 40%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
+            pointer-events: none;
         }
 
         .dashboard-card::before {
             content: ''; position: absolute; top: -50px; right: -50px;
             width: 100px; height: 100px; background: var(--verde-cw);
-            filter: blur(60px); opacity: 0.5;
+            filter: blur(60px); opacity: 0.4;
         }
 
         .estadisticas-container {
@@ -84,11 +105,13 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
+            position: relative; /* Asegura que quede sobre los efectos del fondo */
+            z-index: 2;
         }
 
         .dato-principal { display: flex; flex-direction: column; }
         .dato-principal span.titulo { font-size: 12px; color: var(--texto-gris); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; font-weight: 700; }
-        .dato-principal span.valor { font-size: 42px; font-weight: 800; text-shadow: 0 0 15px rgba(74, 122, 94, 0.4); line-height: 1; }
+        .dato-principal span.valor { font-size: 42px; font-weight: 800; text-shadow: 0 5px 15px rgba(0, 0, 0, 0.8); line-height: 1; }
 
         .graficas-visitas { display: flex; gap: 15px; }
         .grafica-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
@@ -97,32 +120,38 @@
         .donut-chart {
             width: 55px; height: 55px;
             border-radius: 50%;
-            background: conic-gradient(var(--verde-brillo) var(--porcentaje), #1A1A1A 0);
+            background: conic-gradient(var(--verde-brillo) var(--porcentaje), #121212 0);
             display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 0 15px rgba(0,0,0,0.6), inset 0 0 8px rgba(0,0,0,0.8);
+            /* Sombra tipo ranura en el metal */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.8), inset 0 2px 4px rgba(0,0,0,0.9);
         }
         
         .donut-hole {
             width: 43px; height: 43px;
             border-radius: 50%;
-            background-color: var(--fondo-tarjeta);
+            /* El centro usa el mismo tono oscuro del metal */
+            background-color: #151515;
             display: flex; justify-content: center; align-items: center;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.6), 0 1px 1px rgba(255,255,255,0.05);
         }
         .donut-hole span { font-size: 16px; font-weight: 800; color: var(--texto-blanco); }
 
-        /* --- BOTONES DOBLES Y ESTRELLA --- */
+        /* --- BOTONES DOBLES --- */
         .contenedor-botones {
             display: flex;
             gap: 12px; 
             width: 100%;
+            position: relative;
+            z-index: 2;
         }
 
         .btn-accion {
             flex: 1; 
-            background-color: #151515;
+            /* Textura oscura para los botones */
+            background: linear-gradient(to bottom, #1a1a1a, #111111);
             color: var(--texto-blanco);
-            border: 1px solid var(--verde-brillo);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 2px solid #050505;
             padding: 12px 5px; 
             border-radius: 12px;
             font-size: 11px; 
@@ -137,22 +166,23 @@
             gap: 6px;
             position: relative; 
             overflow: hidden; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             text-align: center;
         }
 
-        .btn-accion:hover { background-color: var(--verde-cw); box-shadow: 0 0 20px rgba(74,122,94,0.6); }
+        .btn-accion:hover { 
+            background: var(--verde-cw); 
+            border-color: var(--verde-brillo); 
+        }
 
         .btn-accion img {
             width: 20px; height: 20px;
-            /* Mismo contorno uniforme para la estrella en los botones */
-            filter: drop-shadow(0px 0px 1px var(--contorno-fino));
         }
 
         .btn-accion::after {
             content: ''; position: absolute; top: 0; left: -150%;
             width: 50%; height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
             transform: skewX(-25deg);
             animation: reflejo-luz 3.5s infinite;
         }
@@ -172,7 +202,7 @@
             justify-content: space-between; 
             align-items: center;
             padding: 15px; 
-            background-color: var(--fondo-tarjeta); 
+            background-color: #0f0f0f; 
             border-radius: 12px; 
             margin-bottom: 10px; 
             border: 1px solid rgba(255, 255, 255, 0.03); 
@@ -196,7 +226,7 @@
     <div class="contenedor-app">
         
         <div class="header">
-            <img src="CW_VDEOSC_HORIZONTAL.png" alt="Central Wings Logo">
+            <img src="CW_VDEOSC_HORIZONTAL.png" alt="Central Wings Logo" class="contorno-solido">
         </div>
 
         <div class="saludo-vip">
@@ -231,11 +261,11 @@
             
             <div class="contenedor-botones">
                 <button class="btn-accion">
-                    <img src="ICON_ESTRELLACW_VDEOSC.png" alt="Beneficios">
+                    <img src="ICON_ESTRELLACW_VDEOSC.png" alt="Beneficios" class="contorno-solido">
                     BENEFICIOS
                 </button>
                 <button class="btn-accion">
-                    <img src="ICON_ESTRELLACW_VDEOSC.png" alt="Menú Secreto">
+                    <img src="ICON_ESTRELLACW_VDEOSC.png" alt="Menú Secreto" class="contorno-solido">
                     MENÚ SECRETO
                 </button>
             </div>
