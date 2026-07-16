@@ -24,9 +24,11 @@
             justify-content: center;
             min-height: 100vh;
             padding: 20px;
+            /* Evita que el fondo scrollee cuando el modal está abierto */
+            overflow-x: hidden; 
         }
 
-        .contenedor-app { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 20px; }
+        .contenedor-app { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 20px; position: relative; }
 
         .contorno-solido {
             filter: drop-shadow(1px 0px 0px var(--color-contorno)) 
@@ -45,13 +47,10 @@
         ========================================= */
         .escena-3d {
             width: 100%;
-            /* El padding hack asegura que NUNCA colapse y mantenga la proporción 1.58 */
             padding-bottom: 63.3%; 
             position: relative;
             perspective: 1200px;
             margin-bottom: 10px;
-            
-            /* Animación de flote infinito continua */
             animation: flotar 4s ease-in-out infinite;
         }
 
@@ -134,7 +133,6 @@
             align-items: center;
         }
         
-        /* ¡ESTRELLA AUMENTADA! */
         .frente-centro img { width: 160px; height: auto; }
 
         .frente-bottom-right {
@@ -219,6 +217,91 @@
         .item-izq span.sucursal { font-size: 11px; color: var(--texto-gris); }
         .item-der { color: var(--verde-brillo); font-size: 16px; font-weight: 800; }
 
+
+        /* =========================================
+           VENTANAS MODALES PREMIUM
+        ========================================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px); /* Efecto cristal desenfocado */
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.activo {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            width: 90%;
+            max-width: 400px;
+            background: linear-gradient(135deg, #181818 0%, #0a0a0a 100%);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.9);
+            padding: 25px;
+            transform: translateY(30px);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .modal-overlay.activo .modal-box {
+            transform: translateY(0);
+        }
+
+        .btn-cerrar {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: transparent;
+            border: none;
+            color: var(--texto-gris);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .btn-cerrar:hover { color: var(--texto-blanco); }
+
+        .modal-titulo {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--texto-blanco);
+        }
+        
+        .modal-titulo img { width: 18px; height: 18px; }
+
+        /* Lista de items premium */
+        .lista-premium { list-style: none; display: flex; flex-direction: column; gap: 15px; }
+        
+        .lista-premium li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: rgba(255,255,255,0.03);
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.02);
+        }
+
+        .icono-lista { color: var(--verde-brillo); font-weight: 800; font-size: 14px; margin-top: 2px; }
+        
+        .texto-lista { display: flex; flex-direction: column; gap: 4px; }
+        .texto-lista strong { font-size: 13px; color: var(--texto-blanco); }
+        .texto-lista span { font-size: 11px; color: var(--texto-gris); line-height: 1.4; }
+
     </style>
 </head>
 <body>
@@ -233,31 +316,26 @@
         <div class="escena-3d">
             <div class="tarjeta-3d" id="tarjetaPriority">
                 
+                <!-- CARA FRENTE -->
                 <div class="cara-tarjeta frente">
-                    
                     <div class="frente-top-left">
                         <img src="CW_VDEOSC_HORIZONTAL.png" alt="Central Wings" class="contorno-solido">
                         <span class="texto-grabado altacia">— ALTACIA —</span>
                         <span class="texto-grabado">MASTER EN ALITAS</span>
                     </div>
-
                     <div class="frente-centro">
                         <img src="ICON_ESTRELLACW_VDEOSC.png" alt="Estrella" class="contorno-solido">
                     </div>
-
-                    <div class="frente-bottom-right">
-                        PRIORITY+
-                    </div>
+                    <div class="frente-bottom-right">PRIORITY+</div>
                 </div>
 
+                <!-- CARA DORSO -->
                 <div class="cara-tarjeta dorso">
-                    
                     <div class="estadisticas-container">
                         <div class="dato-principal">
                             <span class="titulo">Visitas Totales</span>
                             <span class="valor">12</span>
                         </div>
-                        
                         <div class="graficas-visitas">
                             <div class="grafica-item">
                                 <div class="donut-chart mes" style="--porcentaje: 75%;">
@@ -275,11 +353,13 @@
                     </div>
                     
                     <div class="contenedor-botones">
-                        <button class="btn-accion" onclick="event.stopPropagation(); alert('Sección en construcción');">
+                        <!-- Botón Beneficios llama a la función abrirModal() -->
+                        <button class="btn-accion" onclick="event.stopPropagation(); abrirModal('modalBeneficios');">
                             <img src="ICON_ESTRELLACW_VDEOSC.png" alt="Beneficios" class="contorno-solido">
                             BENEFICIOS
                         </button>
-                        <button class="btn-accion" onclick="event.stopPropagation(); alert('Sección en construcción');">
+                        <!-- Botón Menú Secreto llama a la función abrirModal() -->
+                        <button class="btn-accion" onclick="event.stopPropagation(); abrirModal('modalMenu');">
                             <img src="ICON_ESTRELLACW_VDEOSC.png" alt="Menú Secreto" class="contorno-solido">
                             MENÚ SECRETO
                         </button>
@@ -293,48 +373,122 @@
             <h3>HISTORIAL DE ASISTENCIA</h3>
             
             <div class="item-historial">
-                <div class="item-izq">
-                    <span class="fecha">Ayer • 8:30 PM</span>
-                    <span class="sucursal">Sucursal Altacia</span>
-                </div>
+                <div class="item-izq"><span class="fecha">Ayer • 8:30 PM</span><span class="sucursal">Sucursal Altacia</span></div>
                 <div class="item-der">✓</div>
             </div>
-
             <div class="item-historial">
-                <div class="item-izq">
-                    <span class="fecha">12 Oct 2026 • 9:15 PM</span>
-                    <span class="sucursal">Sucursal Altacia</span>
-                </div>
+                <div class="item-izq"><span class="fecha">12 Oct 2026 • 9:15 PM</span><span class="sucursal">Sucursal Altacia</span></div>
                 <div class="item-der">✓</div>
             </div>
-            
             <div class="item-historial">
-                <div class="item-izq">
-                    <span class="fecha">28 Sep 2026 • 7:00 PM</span>
-                    <span class="sucursal">Sucursal Altacia</span>
-                </div>
+                <div class="item-izq"><span class="fecha">28 Sep 2026 • 7:00 PM</span><span class="sucursal">Sucursal Altacia</span></div>
                 <div class="item-der">✓</div>
             </div>
         </div>
-
     </div>
 
-    <!-- SCRIPT CORREGIDO SIN BRINCOS -->
+    <!-- =========================================
+         VENTANAS MODALES
+    ========================================= -->
+
+    <!-- MODAL DE BENEFICIOS -->
+    <div class="modal-overlay" id="modalBeneficios" onclick="cerrarModal('modalBeneficios')">
+        <div class="modal-box" onclick="event.stopPropagation();">
+            <button class="btn-cerrar" onclick="cerrarModal('modalBeneficios')">×</button>
+            <h2 class="modal-titulo">
+                <img src="ICON_ESTRELLACW_VDEOSC.png" alt="Estrella" class="contorno-solido"> 
+                BENEFICIOS PRIORITY+
+            </h2>
+            <ul class="lista-premium">
+                <li>
+                    <span class="icono-lista">✓</span>
+                    <div class="texto-lista">
+                        <strong>Acceso PRIORITY+ sin fila</strong>
+                        <span>Pasa directo, tu tiempo es valioso.</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="icono-lista">✓</span>
+                    <div class="texto-lista">
+                        <strong>Mesa reservada en eventos</strong>
+                        <span>Asegura tu mejor vista para el Fut Fest y finales deportivas.</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="icono-lista">✓</span>
+                    <div class="texto-lista">
+                        <strong>Especial de Cumpleaños</strong>
+                        <span>Promoción exclusiva válida durante todo el mes de tu cumpleaños.</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- MODAL DE MENÚ SECRETO -->
+    <div class="modal-overlay" id="modalMenu" onclick="cerrarModal('modalMenu')">
+        <div class="modal-box" onclick="event.stopPropagation();">
+            <button class="btn-cerrar" onclick="cerrarModal('modalMenu')">×</button>
+            <h2 class="modal-titulo">
+                <img src="ICON_ESTRELLACW_VDEOSC.png" alt="Estrella" class="contorno-solido"> 
+                MENÚ SECRETO
+            </h2>
+            <ul class="lista-premium">
+                <li>
+                    <span class="icono-lista">✓</span>
+                    <div class="texto-lista">
+                        <strong>Aderezos extras SIN COSTO</strong>
+                        <span>Aplica en todos tus pedidos COME TODO.</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="icono-lista">✓</span>
+                    <div class="texto-lista">
+                        <strong>Lunch Time $199</strong>
+                        <span>Válido todos los Lunes y Martes.</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="icono-lista">✓</span>
+                    <div class="texto-lista">
+                        <strong>Cócteles 2x1 (Miér. y Jue.)</strong>
+                        <span>Selección especial a cargo de Michell, jefa de barra.</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="icono-lista">✓</span>
+                    <div class="texto-lista">
+                        <strong>Postre Free</strong>
+                        <span>Empieza el fin de semana con algo dulce todos los Viernes.</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <!-- SCRIPT CORREGIDO SIN BRINCOS Y CON MODALES -->
     <script>
+        // Lógica de la Tarjeta 3D
         const tarjeta = document.getElementById('tarjetaPriority');
         let yaSeVolteo = false;
 
         tarjeta.addEventListener('click', () => {
             if (!yaSeVolteo) {
-                if (navigator.vibrate) {
-                    navigator.vibrate(50);
-                }
+                if (navigator.vibrate) { navigator.vibrate(50); }
                 tarjeta.classList.add('girada');
                 yaSeVolteo = true;
-                // Eliminamos la orden que mataba la animación.
-                // ¡Ahora la tarjeta gira y sigue flotando viva y elegante!
             }
         });
+
+        // Lógica de los Modales
+        function abrirModal(id) {
+            document.getElementById(id).classList.add('activo');
+        }
+
+        function cerrarModal(id) {
+            document.getElementById(id).classList.remove('activo');
+        }
     </script>
 </body>
 </html>
